@@ -1,0 +1,562 @@
+local DiscordLib =
+    loadstring(game:HttpGet "https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord")()
+    local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService") 
+
+-- Get the local player and current game ID
+local player = Players.LocalPlayer
+local gamePlaceId = game.PlaceId -- The ID of the game
+
+local player = Players.LocalPlayer
+
+local win = DiscordLib:Window("Purple Robot")
+
+local serv = win:Server("Main", "")
+
+local tab1 = serv:Channel("games")
+local tab2 = serv:Channel("miscs")
+local tab3 = serv:Channel("scripts")
+local tab4 = serv:Channel("scripts shannon made")
+local tab5 = serv:Channel("Purple Robot Executor")
+
+-- tab4
+
+local function setPermanentTime(isDay)
+    local lighting = game:GetService("Lighting")
+    if isDay then
+        lighting.TimeOfDay = "12:00:00"
+    else
+        lighting.TimeOfDay = "00:00:00"
+    end
+    -- Save the setting
+    game:GetService("ReplicatedStorage"):WaitForChild("TimeOfDaySetting").Value = isDay
+end
+
+
+local timeSetting = Instance.new("BoolValue")
+timeSetting.Name = "TimeOfDaySetting"
+timeSetting.Parent = game:GetService("ReplicatedStorage")
+-- Initialize with default value
+timeSetting.Value = true
+
+tab4:Toggle(
+    "Day/Night",
+    false,
+    function(isOn)
+        setPermanentTime(isOn)
+    end
+)
+
+tab4:Button(
+    "Rejoin Game",
+    function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer)
+    end
+)
+
+tab4:Button(
+    "Shiftlock",
+    function()
+        --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet('https://pastebin.com/raw/WQ9NPeDS'))()
+    end
+)
+
+tab4:Button(
+    "Drop Item",
+    function()
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Parent = game.Workspace
+    end
+)
+
+tab4:Button(
+    "Full Bright",
+    function()
+        local Light = game:GetService("Lighting")
+
+function dofullbright()
+Light.Ambient = Color3.new(1, 1, 1)
+Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+Light.ColorShift_Top = Color3.new(1, 1, 1)
+end
+
+dofullbright()
+
+Light.LightingChanged:Connect(dofullbright)
+    end
+)
+
+tab4:Button(
+    "Calculator",
+    function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/KsSfp5Mr"))()
+    end
+)
+
+tab4:Button(
+    "ESP/X-Ray",
+    function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Lucasfin000/SpaceHub/main/UESP'))()
+    end
+)
+
+local function serverHop()
+    -- Get a list of servers
+    local servers = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. gamePlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+
+    -- Check if there are any servers available
+    if servers and servers.data then
+        -- Find a server with space
+        for _, server in ipairs(servers.data) do
+            if server.id ~= game.JobId and server.playing < server.maxPlayers then
+                -- Teleport the player to a new server
+                TeleportService:TeleportToPlaceInstance(gamePlaceId, server.id, player)
+                return
+            end
+        end
+    end
+    -- If no suitable server is found, display a warning
+    warn("No other available servers found.")
+end
+
+tab4:Button(
+    "Serverhop",
+    function()
+        serverHop()
+    end
+)
+
+tab4:Button(
+    "Teleport to Spawn",
+    function()
+        -- Get the player
+        local player = game.Players.LocalPlayer
+        
+        -- Find the spawn location
+        local spawn = game.Workspace:FindFirstChild("SpawnLocation")
+        
+        if spawn then
+            -- Teleport the player to the spawn location
+            player.Character.HumanoidRootPart.CFrame = spawn.CFrame
+            DiscordLib:Notification("Notification", "Teleported to spawn!", "W")
+        else
+            DiscordLib:Notification("Error", "Spawn location not found!", "bruh")
+        end
+    end
+)
+
+-- miscs
+
+tab2:Textbox(
+    "Walkspeed",
+    "Type",
+    true,
+    function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+)
+
+tab2:Textbox(
+    "Jump Power",
+    "Type",
+    true,
+    function(value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+    end
+)
+
+tab2:Textbox(
+    "FOV",
+    "Type",
+    true,
+    function(txt)
+        game.Workspace.CurrentCamera.FieldOfView = txt
+    end
+)
+
+tab2:Textbox(
+    "Gravity",
+    "Type",
+    true,
+    function(newGravity)
+        game.Workspace.Gravity = newGravity
+    end
+)
+
+-- tab5
+
+-- tab6
+
+tab5:Textbox(
+    "Purple Robot 6000",
+    "Execute Script...",
+    true,  -- Multiline is set to true
+    function(script)
+        -- Attempt to execute the script entered by the user
+        local success, err = pcall(function()
+            loadstring(script)()  -- Execute the script
+        end)
+
+        -- Notify the user whether execution was successful or if there was an error
+        if success then
+            DiscordLib:Notification("Notification", "Script executed successfully!", "w")
+        else
+            DiscordLib:Notification("Error", "Execution failed: " .. err, "bruh")
+        end
+    end
+)
+
+-- games
+
+tab1:Button(
+    "BrookhavenðŸ¡",
+    function()
+        loadstring(game:HttpGet(("https://raw.githubusercontent.com/Trev0rZ/LoaderM/main/ImperialHub-Working.lua"),true))()
+    end
+)
+
+tab1:Button(
+    "Dress To Impress",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/hellohellohell012321/DTI-GUI-V2/main/dti_gui_v2.lua",true))()
+    end
+)
+
+tab1:Button(
+    "Bedwars",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))()
+    end
+)
+
+tab1:Button(
+    "MM2",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Au0yX/Community/main/XhubMM2"))()
+    end
+)
+
+tab1:Button(
+    "Meme Sea Elgato Hub",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/TranVanBao1411/ElgatoHub/main/Loader.lua"))()
+    end
+)
+
+tab1:Button(
+    "Meme Sea Redz Hub",
+    function()
+       --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/MemeSea/main/Source.lua"))() 
+    end
+)
+
+tab1:Button(
+    "Pressure",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/New-C4-Remote.lua/main/pressure_kuy.lua"))()
+    end
+)
+
+tab1:Button(
+    "Blade Ball",
+    function()
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/Mc4121ban/trashscript/main/chaotic.lua"))() 
+    end
+)
+
+-- scripts
+
+tab3:Button(
+    "keyboard",
+    function()
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))() 
+    end
+)
+
+tab3:Button(
+    "Fly GUI",
+    function()
+        --ARCEUS X FLY V2 SCRIPT
+loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
+    end
+)
+
+tab3:Button(
+    "Spy Chat",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Shannonnnnnnn/Chat-spy-/f9abf143a7d0f6e9b3e9692dc0fd3b1850f8b8af/Gay"))();
+    end
+)
+
+tab3:Button(
+    "Spectate Script",
+    function()
+        local runDummyScript = function(f,scri)
+local oldenv = getfenv(f)
+local newenv = setmetatable({}, {
+__index = function(_, k)
+if k:lower() == 'script' then
+return scri
+else
+return oldenv[k]
+end
+end
+})
+setfenv(f, newenv)
+ypcall(function() f() end)
+end
+cors = {}
+mas = Instance.new("Model",game:GetService("Lighting")) 
+mas.Name = "CompiledModel"
+o1 = Instance.new("ScreenGui")
+o2 = Instance.new("Frame")
+o3 = Instance.new("TextButton")
+o4 = Instance.new("TextButton")
+o5 = Instance.new("TextLabel")
+o6 = Instance.new("ImageButton")
+o7 = Instance.new("LocalScript")
+o1.Name = "SpectateGui"
+o1.Parent = mas
+o2.Name = "Bar"
+o2.Parent = o1
+o2.Position = UDim2.new(-1,-100,0.87999999523163,-50)
+o2.Size = UDim2.new(0,200,0,50)
+o2.Position = UDim2.new(-1,-100,0.87999999523163,-50)
+o2.BackgroundColor3 = Color3.new(0, 0, 0)
+o2.BackgroundTransparency = 0.20000000298023
+o2.BorderSizePixel = 5
+o3.Name = "Previous"
+o3.Parent = o2
+o3.Size = UDim2.new(0.25,0,1,0)
+o3.Text = "<"
+o3.BackgroundColor3 = Color3.new(0.52549, 0.52549, 0.52549)
+o3.BorderColor3 = Color3.new(0.509804, 0.796079, 1)
+o3.BorderSizePixel = 0
+o3.Font = Enum.Font.SourceSans
+o3.FontSize = Enum.FontSize.Size48
+o3.TextColor3 = Color3.new(1, 1, 1)
+o4.Name = "Next"
+o4.Parent = o2
+o4.Position = UDim2.new(1,0,0,0)
+o4.Size = UDim2.new(-0.25,0,1,0)
+o4.Text = ">"
+o4.Position = UDim2.new(1,0,0,0)
+o4.BackgroundColor3 = Color3.new(0.52549, 0.52549, 0.52549)
+o4.BorderColor3 = Color3.new(0.509804, 0.796079, 1)
+o4.BorderSizePixel = 0
+o4.Font = Enum.Font.SourceSans
+o4.FontSize = Enum.FontSize.Size48
+o4.TextColor3 = Color3.new(1, 1, 1)
+o5.Name = "Title"
+o5.Parent = o2
+o5.Position = UDim2.new(0.27500000596046,0,0,0)
+o5.Size = UDim2.new(0.44999998807907,0,1,0)
+o5.Text = ""
+o5.Position = UDim2.new(0.27500000596046,0,0,0)
+o5.BackgroundColor3 = Color3.new(1, 1, 1)
+o5.BackgroundTransparency = 1
+o5.Font = Enum.Font.SourceSans
+o5.FontSize = Enum.FontSize.Size14
+o5.TextColor3 = Color3.new(1, 1, 1)
+o5.TextScaled = true
+o5.TextWrapped = true
+o6.Name = "Button"
+o6.Parent = o1
+o6.Position = UDim2.new(0,0,0.5,-25)
+o6.Size = UDim2.new(0,50,0,50)
+o6.Position = UDim2.new(0,0,0.5,-25)
+o6.BackgroundColor3 = Color3.new(1, 1, 1)
+o6.BackgroundTransparency = 0.30000001192093
+o6.BorderSizePixel = 5
+o6.Image = "http://www.roblox.com/asset/?id=176106970"
+o7.Parent = o1
+table.insert(cors,coroutine.create(function()
+wait()
+runDummyScript(function()
+
+cam = game.Workspace.CurrentCamera
+
+local bar = script.Parent.Bar
+local title = bar.Title
+local prev = bar.Previous
+local nex = bar.Next
+local button = script.Parent.Button
+
+function get()
+	for _,v in pairs(game.Players:GetPlayers())do
+		if v.Name == title.Text then
+			return(_)
+		end
+	end
+end
+
+
+local debounce = false
+button.MouseButton1Click:connect(function()
+	if debounce == false then debounce = true
+		bar:TweenPosition(UDim2.new(.5,-100,0.88,-50),"In","Linear",1,true)
+		pcall(function()
+				title.Text = game.Players:GetPlayerFromCharacter(cam.CameraSubject.Parent).Name
+		end)
+	elseif debounce == true then debounce = false
+		pcall(function() cam.CameraSubject = game.Players.LocalPlayer.Character.Humanoid end)
+			bar:TweenPosition(UDim2.new(-1,-100,0.88,-50),"In","Linear",1,true)
+		end
+end)
+
+prev.MouseButton1Click:connect(function()
+	wait(.1)
+	local players = game.Players:GetPlayers()
+	local num = get()
+	if not pcall(function() 
+		cam.CameraSubject = players[num-1].Character.Humanoid
+		end) then
+		cam.CameraSubject = players[#players].Character.Humanoid
+	end
+pcall(function()
+				title.Text = game.Players:GetPlayerFromCharacter(cam.CameraSubject.Parent).Name
+		end)
+end)
+
+nex.MouseButton1Click:connect(function()
+	wait(.1)
+	local players = game.Players:GetPlayers()
+	local num = get()
+	if not pcall(function() 
+		cam.CameraSubject = players[num+1].Character.Humanoid
+		end) then
+		cam.CameraSubject = players[1].Character.Humanoid
+	end
+pcall(function()
+				title.Text = game.Players:GetPlayerFromCharacter(cam.CameraSubject.Parent).Name
+		end)
+end)
+
+
+end,o7)
+end))
+mas.Parent = workspace
+mas:MakeJoints()
+local mas1 = mas:GetChildren()
+for i=1,#mas1 do
+	mas1[i].Parent = game:GetService("Players").LocalPlayer.PlayerGui 
+	ypcall(function() mas1[i]:MakeJoints() end)
+end
+mas:Destroy()
+for i=1,#cors do
+coroutine.resume(cors[i])
+end
+    end
+)
+
+tab3:Button(
+    "TP GUI",
+    function()
+      mouse = game.Players.LocalPlayer:GetMouse()
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Tp tool(Equip to Click TP)"
+tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+    end
+)
+
+tab3:Button(
+    "BTOOLS",
+    function()
+        loadstring(game:GetObjects("rbxassetid://6695644299")[1].Source)()
+    end
+)
+
+
+
+tab3:Button(
+    "FE Invisible",
+    function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./dbb6ce6f6cee4f7a5c9e20d7b88e83db2a93bf25/Invisible%20GUI'))()
+    end
+)
+
+tab3:Button(
+    "Nameless Admin",
+    function()
+     loadstring(game:HttpGet("https://raw.githubusercontent.com/FD2Team/Nameless-Admin-No-Byfron-Kick/main/Source",true))()   
+    end
+)
+
+tab3:Button(
+    "Ghost Hub",
+    function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub'))()
+    end
+)
+
+tab3:Button(
+    "Admin Tool Giver",
+    function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/AZVi2tuK"))()
+    end
+)
+
+tab3:Button(
+    "Anti AFK",
+    function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/brosula123/Anti-afk/main/Bl%C3%B8xzScript"))()
+    end
+)
+
+tab3:Button(
+    "Chat Bypass",
+    function()
+        pcall(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/hellohellohell012321/KAWAII-BYPASS/main/kawaii-bypass",true))()
+end)
+    end
+)
+
+tab3:Button(
+    "Avatar Stealer",
+    function()
+        -- Script
+
+loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\73\110\118\111\111\107\101\114\49\49\47\79\117\116\102\105\116\47\109\97\105\110\47\79\117\116\102\105\116\67\111\112\105\101\114\46\108\117\97\34\44\32\116\114\117\101\41\41\40\41\10")()
+
+    end
+)
+
+tab3:Button(
+    "Unlock Gamepass",
+    function()
+        loadstring(game:HttpGet("https://gist.githubusercontent.com/dark-modz/6982de484735e730494b2d5a10fd6a2a/raw/a92563b0cd6a63683341a09f54baccea5349ed69/feGamepassV2",true))()
+    end
+)
+
+tab3:Button(
+    "Fake Lag",
+    function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/VM3b0Thg'))()
+    end
+)
+
+tab3:Button(
+    "Rochips Hub",
+    function()
+        if "Rochips Loader" then
+	local Rochips_panel,v,u,i=loadstring,"/snippets","gwwv","/raw/main.lua" ;
+	Rochips_panel(game:HttpGet("https://glot.io"..v.."/" ..u.."877ga3"..i))();
+	return "it will load in around 3 - 131 seconds"
+end
+    end
+)

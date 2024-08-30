@@ -272,7 +272,7 @@ tab1:Button(
     end
 )
 
-tab3:Button(
+tab1:Button(
     "3008",
     function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Daniel-Herron/Wulphram/main/SCP3008.lua",true))()
